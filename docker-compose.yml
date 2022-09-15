@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  postgres:
+    image: "postgres:latest"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=reactive
+      - POSTGRES_USER=reactive
+      - POSTGRES_PASSWORD=reactive
