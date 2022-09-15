@@ -26,6 +26,10 @@ public class StudentService {
         return studentRepository.findById(id).map(studentConverter::toDto);
     }
 
+    public Flux<StudentDto> findAllStudents() {
+        return studentRepository.findAll().map(studentConverter::toDto);
+    }
+
     public Mono<StudentDto> addNewStudent(StudentDto student) {
         return studentRepository.save(studentConverter.toEntity(student)).map(studentConverter::toDto);
     }

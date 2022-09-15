@@ -39,6 +39,8 @@ public class SecurityConfig {
             .authorizeExchange()
             .pathMatchers("/students/admin")
             .hasAuthority("ROLE_ADMIN")
+            .pathMatchers("/tutors", "/university")
+            .permitAll()
             .anyExchange()
             .authenticated()
             .and().httpBasic()
