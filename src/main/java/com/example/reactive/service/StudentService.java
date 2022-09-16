@@ -1,9 +1,12 @@
 package com.example.reactive.service;
 
 import com.example.reactive.converter.StudentConverter;
+import com.example.reactive.dto.BookDto;
 import com.example.reactive.dto.StudentDto;
 import com.example.reactive.entity.StudentEntity;
 import com.example.reactive.repo.StudentRepository;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -27,7 +30,15 @@ public class StudentService {
     }
 
     public Flux<StudentDto> findAllStudents() {
-        return studentRepository.findAll().map(studentConverter::toDto);
+        Flux<List<BookDto>> bookFlux = Flux.range(1, Integer.MAX_VALUE)
+            .map(i -> List.of(new BookDto(UUID.randomUUID(), "bookTitle" + i)));
+
+        return studentRepository.findAll()
+            .map(studentConverter::toDto)
+            .zipWith(bookFlux, (s, b) -> {
+                s.setBooks(b);
+                return s;
+            });
     }
 
     public Mono<StudentDto> addNewStudent(StudentDto student) {
